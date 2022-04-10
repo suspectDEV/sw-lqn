@@ -1,4 +1,6 @@
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
+import { Modal, Button, Skeleton } from "antd";
+import { Router, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { IArrayPeople } from "./people/schema";
 
@@ -9,7 +11,9 @@ interface IChDetails {
 // IArrayPeople
 
 const CharacterDetails = ({ userID }: IChDetails) => {
+  const router = useRouter();
   const [userData, setUserData] = useState<IArrayPeople>();
+
   useEffect(() => {
     queryDetailsCharacter(userID).then((res) => {
       setUserData(res.person);
@@ -19,7 +23,8 @@ const CharacterDetails = ({ userID }: IChDetails) => {
   return (
     <>
       {userData && (
-        <div>
+        // @ts-ignore FIXME:Review
+        <Modal title="Hello" visible={true} onCancel={() => router.back()}>
           <h3>{userData.name}</h3>
           <p>{userData.birthYear}</p>
           <p>{userData.eyeColor}</p>
@@ -30,7 +35,7 @@ const CharacterDetails = ({ userID }: IChDetails) => {
           <p>{userData.skinColor}</p>
           <p>{userData.created}</p>
           <p>{userData.edited}</p>
-        </div>
+        </Modal>
       )}
     </>
   );
