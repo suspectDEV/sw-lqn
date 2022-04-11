@@ -1,10 +1,10 @@
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
-import { Modal, Tabs, Tag, Divider, Avatar } from "antd";
+import { Modal, Tabs, Tag, Divider, Avatar, Spin } from "antd";
 import { Router, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { IArrayPeople } from "./characters/schema";
-import moment from "moment"
+import moment from "moment";
 
 const { TabPane } = Tabs;
 
@@ -22,23 +22,19 @@ const CharacterDetails = ({ userID }: IChDetails) => {
   useEffect(() => {
     queryDetailsCharacter(userID).then((res) => {
       setUserData(res.person);
-      setVisible(true)
+      setVisible(true);
     });
   }, [userID]);
 
   return (
     <>
-      {userData && (
+      {userData ? (
         // @ts-ignore FIXME:Review
         <Modal
           title="Character details"
           visible={visible}
-          onCancel={() => {
-            setVisible(!visible)
-          }}
-          onOk={() => {
-            setVisible(!visible)
-          }}
+          onCancel={handleModal}
+          onOk={handleModal}
         >
           <Tabs defaultActiveKey="1">
             <TabPane tab="Personal information" key="1">
@@ -87,11 +83,11 @@ const CharacterDetails = ({ userID }: IChDetails) => {
                 </div>
                 <div>
                   <h4>Created at</h4>
-                  <p>{moment(userData.created).format('MMMM Do YYYY')}</p>
+                  <p>{moment(userData.created).format("MMMM Do YYYY")}</p>
                 </div>
                 <div>
                   <h4>Updated at</h4>
-                  <p>{moment(userData.edited).format('MMMM Do YYYY')}</p>
+                  <p>{moment(userData.edited).format("MMMM Do YYYY")}</p>
                 </div>
               </Grid>
             </TabPane>
@@ -103,7 +99,8 @@ const CharacterDetails = ({ userID }: IChDetails) => {
                     <strong>Director:</strong> {film.director}
                   </p>
                   <p>
-                    <strong>Release date:</strong> {moment(film.releaseDate).format('MMMM Do YYYY')}
+                    <strong>Release date:</strong>{" "}
+                    {moment(film.releaseDate).format("MMMM Do YYYY")}
                   </p>
                   <h4>Planets:</h4>
                   <div>
@@ -118,9 +115,23 @@ const CharacterDetails = ({ userID }: IChDetails) => {
             </TabPane>
           </Tabs>
         </Modal>
+      ) : (
+        <LoadingPage>
+          <Spin size="large" spinning />
+        </LoadingPage>
       )}
     </>
   );
+  function handleModal() {
+    setVisible(!visible);
+      router.push(
+        {
+          pathname: "/",
+        },
+        undefined,
+        { scroll: false }
+      );
+  }
 };
 
 async function queryDetailsCharacter(userID: string) {
@@ -195,6 +206,17 @@ const Film = styled.div`
   }
 `;
 
+const LoadingPage = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const PersonalInfo = styled.div``;
 
 const Header = styled.div`
@@ -231,8 +253,8 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 
-  h4{
-    margin:0;
+  h4 {
+    margin: 0;
     font-weight: 600;
   }
 `;
