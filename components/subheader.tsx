@@ -1,12 +1,5 @@
 import styled from "styled-components";
 
-// export const Subheader = () => (
-//   <>
-//   <h5>Star Wars</h5>
-//     <h1>Personajes</h1>
-//   </>
-// )
-
 export const Subheader = styled.div`
   background: url("/assets/img/banner.jpg");
   background-size: cover;

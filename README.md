@@ -1,6 +1,6 @@
 # Star Wars - Website Frontend
 
-Este proyecto se encuentra alojado en la dirección [https://sw.alexfl.co](https://sw.alexfl.co)
+Demo: [https://sw.alexfl.co](https://sw.alexfl.co)
 
 ## Dependencias
 

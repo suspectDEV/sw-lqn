@@ -2,7 +2,7 @@ import { Button } from "antd";
 import styled from "styled-components"
 import Link from "next/link";
 import { useState } from "react";
-import { IArrayPeople, IList } from "./schema";
+import { IArrayPeople, IList } from "../model/character.schema";
 
 const PeopleList = ({ arrCharacters, totalCount }: IList) => {
   const [cantCharacters, setCantCharacters] = useState<number>(totalCount);

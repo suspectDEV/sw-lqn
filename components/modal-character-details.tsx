@@ -1,18 +1,21 @@
-import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
-import { Modal, Tabs, Tag, Divider, Avatar, Spin } from "antd";
-import { Router, useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { IArrayPeople } from "./characters/schema";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
+import { Modal, Tabs, Tag, Avatar, Spin } from "antd";
 import moment from "moment";
+import { IArrayPeople } from "../model/character.schema";
+
+// ..Components
+import { PersonalInfo, Header, Cake, Grid, LoadingPage } from "./personal-info.component";
+import { Film } from "./film-details.component";
+import { API } from "../services/constants";
 
 const { TabPane } = Tabs;
 
 interface IChDetails {
   userID: string;
 }
-
-// IArrayPeople
 
 const CharacterDetails = ({ userID }: IChDetails) => {
   const router = useRouter();
@@ -28,6 +31,10 @@ const CharacterDetails = ({ userID }: IChDetails) => {
 
   return (
     <>
+      <Head>
+        <title>Star Wars {"- " + userData?.name}</title>
+        <meta name="description" content="Created for LQN." />
+      </Head>
       {userData ? (
         // @ts-ignore FIXME:Review
         <Modal
@@ -94,23 +101,23 @@ const CharacterDetails = ({ userID }: IChDetails) => {
             <TabPane tab="Related films" key="2">
               {userData.filmConnection.films.map((film) => (
                 <Film key={film.id}>
-                  <h3>{film.title}</h3>
-                  <p>
-                    <strong>Director:</strong> {film.director}
-                  </p>
-                  <p>
-                    <strong>Release date:</strong>{" "}
-                    {moment(film.releaseDate).format("MMMM Do YYYY")}
-                  </p>
-                  <h4>Planets:</h4>
-                  <div>
-                    {film.planetConnection.planets.map((planet) => (
-                      <Tag key={planet.id} color="#108ee9">
-                        {planet.name}
-                      </Tag>
-                    ))}
-                  </div>
-                </Film>
+                <h3>{film.title}</h3>
+                <p>
+                  <strong>Director:</strong> {film.director}
+                </p>
+                <p>
+                  <strong>Release date:</strong>{" "}
+                  {moment(film.releaseDate).format("MMMM Do YYYY")}
+                </p>
+                <h4>Planets:</h4>
+                <div>
+                  {film.planetConnection.planets.map((planet) => (
+                    <Tag key={planet.id} color="#108ee9">
+                      {planet.name}
+                    </Tag>
+                  ))}
+                </div>
+              </Film>
               ))}
             </TabPane>
           </Tabs>
@@ -124,19 +131,19 @@ const CharacterDetails = ({ userID }: IChDetails) => {
   );
   function handleModal() {
     setVisible(!visible);
-      router.push(
-        {
-          pathname: "/",
-        },
-        undefined,
-        { scroll: false }
-      );
+    router.push(
+      {
+        pathname: "/",
+      },
+      undefined,
+      { scroll: false }
+    );
   }
 };
 
 async function queryDetailsCharacter(userID: string) {
   const client = new ApolloClient({
-    uri: "https://swapi-graphql.netlify.app/.netlify/functions/index",
+    uri: API,
     cache: new InMemoryCache(),
   });
   const { data } = await client.query({
@@ -180,83 +187,5 @@ async function queryDetailsCharacter(userID: string) {
   });
   return data;
 }
-
-const Film = styled.div`
-  &:not(:last-child) {
-    border-bottom: 1px solid #d1d1d1;
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
-  }
-  h3,
-  p {
-    margin: 0;
-  }
-  p {
-    color: #555555;
-  }
-
-  p > strong {
-    font-weight: 600;
-    color: #777777;
-  }
-
-  h4 {
-    margin-top: 0.5rem;
-    font-weight: 600;
-  }
-`;
-
-const LoadingPage = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const PersonalInfo = styled.div``;
-
-const Header = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 1rem;
-  .data {
-    margin-left: 1rem;
-
-    h3 {
-      margin: 0;
-      font-weight: 600;
-    }
-    p {
-      margin: 0;
-      display: inline-block;
-    }
-  }
-`;
-
-const Cake = styled.div`
-  background-image: url("https://www.svgrepo.com/show/20280/birthday-cake.svg");
-  width: 15px;
-  height: 15px;
-  background-size: cover;
-  opacity: 0.4;
-  cursor: pointer;
-  display: inline-block;
-  margin-left: 0.5rem;
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-
-  h4 {
-    margin: 0;
-    font-weight: 600;
-  }
-`;
 
 export default CharacterDetails;
