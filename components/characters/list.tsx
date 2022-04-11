@@ -10,17 +10,17 @@ const PeopleList = ({ arrCharacters, totalCount }: IList) => {
 
   return (
     <>
-      <h2>Personajes ({cantCharacters})</h2>
+      <h2>Characters ({cantCharacters})</h2>
       {cantCharacters > 0 ? (
         <>
           <MyTable>
             <thead>
               <tr>
                 <th>#</th>
-                <th>Nombre</th>
-                <th>Planeta</th>
-                <th>Primer película</th>
-                <th>Especie</th>
+                <th>Name</th>
+                <th>Planet</th>
+                <th>First film</th>
+                <th>Specie</th>
                 <th></th>
               </tr>
             </thead>
@@ -43,7 +43,7 @@ const PeopleList = ({ arrCharacters, totalCount }: IList) => {
                     scroll={false}
                     >
                       <Button type="primary">
-                      Ver detalles
+                      More details
                       </Button>
                     </Link>
                   </td>

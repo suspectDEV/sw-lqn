@@ -4,6 +4,7 @@ import { Router, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { IArrayPeople } from "./characters/schema";
+import moment from "moment"
 
 const { TabPane } = Tabs;
 
@@ -28,12 +29,12 @@ const CharacterDetails = ({ userID }: IChDetails) => {
       {userData && (
         // @ts-ignore FIXME:Review
         <Modal
-          title="Detalles del personaje"
+          title="Character details"
           visible={true}
           onCancel={() => router.back()}
         >
           <Tabs defaultActiveKey="1">
-            <TabPane tab="Información personal" key="1">
+            <TabPane tab="Personal information" key="1">
               <PersonalInfo>
                 <Header>
                   <Avatar
@@ -79,26 +80,25 @@ const CharacterDetails = ({ userID }: IChDetails) => {
                 </div>
                 <div>
                   <h4>Created at</h4>
-                  <p>{userData.created}</p>
+                  <p>{moment(userData.created).format('MMMM Do YYYY')}</p>
                 </div>
                 <div>
                   <h4>Updated at</h4>
-                  <p>{userData.edited}</p>
+                  <p>{moment(userData.edited).format('MMMM Do YYYY')}</p>
                 </div>
               </Grid>
             </TabPane>
-            <TabPane tab="Películas relacionadas" key="2">
+            <TabPane tab="Related films" key="2">
               {userData.filmConnection.films.map((film) => (
                 <Film key={film.id}>
-                  {/* <Divider orientation="left">{film.title}</Divider> */}
                   <h3>{film.title}</h3>
                   <p>
                     <strong>Director:</strong> {film.director}
                   </p>
                   <p>
-                    <strong>Fecha de lanzamiento:</strong> {film.releaseDate}
+                    <strong>Release date:</strong> {moment(film.releaseDate).format('MMMM Do YYYY')}
                   </p>
-                  <h4>Planetas:</h4>
+                  <h4>Planets:</h4>
                   <div>
                     {film.planetConnection.planets.map((planet) => (
                       <Tag key={planet.id} color="#108ee9">
