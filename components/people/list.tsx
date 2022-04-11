@@ -4,14 +4,14 @@ import Link from "next/link";
 import { useState } from "react";
 import { IArrayPeople, IList } from "./schema";
 
-const PeopleList = ({ arrPeople }: IList) => {
-  const [countPeople, setCountPeople] = useState<number>(1);
-  const [peopleList, setPeopleList] = useState<IArrayPeople[] | []>(arrPeople);
+const PeopleList = ({ arrCharacters, totalCount }: IList) => {
+  const [cantCharacters, setCantCharacters] = useState<number>(totalCount);
+  const [peopleList, setPeopleList] = useState<IArrayPeople[] | []>(arrCharacters);
 
   return (
     <>
-      <h2>Personajes ({countPeople})</h2>
-      {countPeople > 0 ? (
+      <h2>Personajes ({cantCharacters})</h2>
+      {cantCharacters > 0 ? (
         <>
           <MyTable>
             <thead>

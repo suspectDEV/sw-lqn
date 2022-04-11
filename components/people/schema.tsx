@@ -1,5 +1,6 @@
 export interface IList {
-  arrPeople: any[];
+  arrCharacters: any[];
+  totalCount: number;
 }
 
 export interface IArrayPeople {

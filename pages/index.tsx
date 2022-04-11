@@ -5,20 +5,21 @@ import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 import { Footer, Main } from "../styles/Home.styles";
 
 // ..Components
-import { Subheader } from "../components/subheader";
+import { Avatar, Fade, Subheader } from "../components/subheader";
 import PeopleList from "../components/people/list";
 import { useRouter } from "next/router";
 import CharacterDetails from "../components/character-details";
 
 interface IHome {
   arrPeople: any[];
+  totalCount: number;
 }
 
-export default function Home({ arrPeople }: IHome) {
+export default function Home({ arrPeople, totalCount }: IHome) {
   const initialState = arrPeople;
   const [people, setPeople] = useState(initialState);
-  const router =  useRouter();
-  const chID = ""+router.query.character
+  const router = useRouter();
+  const chID = "" + router.query.character;
 
   return (
     <div>
@@ -28,16 +29,17 @@ export default function Home({ arrPeople }: IHome) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {
-        router.query.character&&(
-          <CharacterDetails userID={chID} />
-        )
-      }
+      {router.query.character && <CharacterDetails userID={chID} />}
 
-      <Subheader />
+      <Subheader>
+        <h5>LQN</h5>
+        <h1>Star Wars</h1>
+        <Avatar />
+        <Fade />
+      </Subheader>
 
       <Main>
-        <PeopleList arrPeople={initialState} />
+        <PeopleList arrCharacters={initialState} totalCount={totalCount} />
       </Main>
 
       <Footer>
@@ -69,6 +71,7 @@ export async function getStaticProps() {
     query: gql`
       query {
         allPeople {
+          totalCount
           people {
             id
             name
@@ -96,6 +99,7 @@ export async function getStaticProps() {
   return {
     props: {
       arrPeople: data.allPeople.people,
+      totalCount: data.allPeople.totalCount,
     },
   };
 }
