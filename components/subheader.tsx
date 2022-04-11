@@ -38,6 +38,7 @@ export const Subheader = styled.div`
     font-size: 7vmin;
     line-height: 7vmin;
     max-width: 60%;
+    margin-bottom: 4rem;
   }
 
   h5 {
@@ -57,20 +58,18 @@ export const Fade = styled.div`
 
 
 export const Avatar = () => (
-  <ContentAvatar>
+  <ContentAvatar href="https://alexfl.co/cv" target={"_blank"}>
     <img src={"https://avatars.githubusercontent.com/u/21148589?v=4"} />
     <aside>
       <small>
-        <pre>Alexander Forero L.</pre>
+        <pre>Alexander FL</pre>
       </small>
-      <small>Ene 23, 2022</small>
+      <small>Abr 11, 2022</small>
     </aside>
   </ContentAvatar>
 );
 
-const ContentAvatar = styled.div`
-  margin-top: 80px;
-
+const ContentAvatar = styled.a`
   img {
     max-width: 27px;
     max-height: 27px;

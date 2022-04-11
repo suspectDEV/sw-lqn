@@ -37,7 +37,17 @@ export interface IFilmConnection {
 export interface IFilm {
   id: string;
   title: string;
-  episodeID: number;
   director: string;
+  releaseDate: string;
+  episodeID: number;
   created: string;
+  planetConnection: IFilmPlanetsConnection;
+}
+
+export interface IFilmPlanetsConnection {
+  planets: IPlanet[];
+}
+
+export interface IPlanet {
+  name: string;
 }

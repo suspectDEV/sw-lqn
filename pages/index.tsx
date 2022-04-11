@@ -6,9 +6,9 @@ import { Footer, Main } from "../styles/Home.styles";
 
 // ..Components
 import { Avatar, Fade, Subheader } from "../components/subheader";
-import PeopleList from "../components/people/list";
+import PeopleList from "../components/characters/list";
 import { useRouter } from "next/router";
-import CharacterDetails from "../components/character-details";
+import CharacterDetails from "../components/modal-character-details";
 
 interface IHome {
   arrPeople: any[];
