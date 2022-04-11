@@ -17,10 +17,12 @@ interface IChDetails {
 const CharacterDetails = ({ userID }: IChDetails) => {
   const router = useRouter();
   const [userData, setUserData] = useState<IArrayPeople>();
+  const [visible, setVisible] = useState<boolean>(false);
 
   useEffect(() => {
     queryDetailsCharacter(userID).then((res) => {
       setUserData(res.person);
+      setVisible(true)
     });
   }, [userID]);
 
@@ -30,8 +32,13 @@ const CharacterDetails = ({ userID }: IChDetails) => {
         // @ts-ignore FIXME:Review
         <Modal
           title="Character details"
-          visible={true}
-          onCancel={() => router.back()}
+          visible={visible}
+          onCancel={() => {
+            setVisible(!visible)
+          }}
+          onOk={() => {
+            setVisible(!visible)
+          }}
         >
           <Tabs defaultActiveKey="1">
             <TabPane tab="Personal information" key="1">
